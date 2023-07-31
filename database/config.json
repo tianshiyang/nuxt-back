@@ -1,23 +1,23 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "12345678",
     "database": "nuxt_back",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
+    "password": "12345678",
     "database": "nuxt_back",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "12345678",
     "database": "nuxt_back",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "dialect": "mysql"
   }
 }
