@@ -5,6 +5,8 @@
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
+const I18n = require('i18n');
+
 module.exports = appInfo => {
   /**
    * built-in config
@@ -12,6 +14,13 @@ module.exports = appInfo => {
    **/
   const config = exports = {
   };
+
+  I18n.configure({
+    locales: [ 'zh-CN' ],
+    defaultLocale: 'zh-CN',
+    directory: __dirname + '/locale',
+  });
+
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_tianshiyang';
@@ -49,6 +58,13 @@ module.exports = appInfo => {
     origin: '*', // 允许所有跨域访问
     credentials: true, // 允许 Cookie 跨域跨域
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
+  };
+
+  config.validate = {
+    translate() {
+      const args = Array.prototype.slice.call(arguments);
+      return I18n.__.apply(I18n, args);
+    },
   };
 
   return {
