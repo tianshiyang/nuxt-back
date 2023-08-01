@@ -9,6 +9,9 @@ module.exports = app => {
     await app.model.sync();
   });
 
-  const { router, controller } = app;
-  router.get('/', controller.home.index);
+  const { router, controller, middleware } = app;
+
+  // 身份认证
+  const loginVerify = middleware.loginVerify(app.config.jwt.secret);
+  router.post('/api/user/login', controller.user.login.login);
 };
