@@ -31,7 +31,7 @@ class loginController extends BaseController {
         this.success({
           data: {
             ...userInfo,
-            token: this.app.jwt.sign(userInfo, this.app.config.jwt.secret),
+            token: this.app.jwt.sign(this.app.config.jwt.secret, userInfo),
           },
           isSuccess: true,
         });
@@ -72,11 +72,12 @@ class loginController extends BaseController {
     } else {
       let newUserInfo = await ctx.service.user.index.userSignIn({ username, password });
       if (newUserInfo) {
+        console.log(newUserInfo);
         newUserInfo = JSON.parse(JSON.stringify(newUserInfo));
         this.success({
           data: {
             ...newUserInfo,
-            token: this.app.jwt.sign(userInfo, this.app.config.jwt.secret),
+            token: this.app.jwt.sign(this.app.config.jwt.secret, userInfo),
           },
           isSuccess: true,
         });
