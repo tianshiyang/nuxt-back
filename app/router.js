@@ -15,4 +15,5 @@ module.exports = app => {
   const loginVerify = middleware.loginVerify(app.config.jwt.secret);
   router.post('/api/user/login', controller.user.login.login);
   router.post('/api/user/signin', controller.user.login.signIn);
+  router.get('/api/user/getUserInfo', loginVerify, controller.user.index.getUserInfo);
 };

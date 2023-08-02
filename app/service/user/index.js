@@ -1,7 +1,7 @@
 const Service = require('egg').Service;
 
 class UserService extends Service {
-  // 判断当前用户是否存在
+  // 通过名称获取当前用户信息
   async getUserByUsername(username) {
     const { ctx } = this;
     try {
