@@ -28,6 +28,24 @@ class UserService extends Service {
       return e.sqlMessage;
     }
   }
+
+  // 更新用户信息
+  async updateUserInfo({ id, sex, nickname }) {
+    try {
+      const result = await this.ctx.model.User.update({
+        id,
+        sex,
+        nickname,
+      }, {
+        where: {
+          id,
+        },
+      });
+      return result;
+    } catch (e) {
+      return e.sqlMessage;
+    }
+  }
 }
 
 module.exports = UserService;

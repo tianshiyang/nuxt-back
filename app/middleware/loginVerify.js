@@ -6,15 +6,15 @@ module.exports = secret => {
         ctx.app.jwt.verify(token, secret);
         await next();
       } catch (error) {
-        ctx.status = 200;
+        ctx.status = 401;
         ctx.body = {
           code: 401,
-          message: '身份过期',
+          message: "登录过期",
         };
         return;
       }
     } else {
-      ctx.status = 200;
+      ctx.status = 401;
       ctx.body = {
         code: 401,
         message: '未登录',
