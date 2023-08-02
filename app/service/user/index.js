@@ -46,6 +46,22 @@ class UserService extends Service {
       return e.sqlMessage;
     }
   }
+
+  // 更新用户密码
+  async updateUserPassword({ id, newPassword }) {
+    try {
+      const result = await this.ctx.model.User.update({
+        password: newPassword,
+      }, {
+        where: {
+          id,
+        },
+      });
+      return result;
+    } catch (e) {
+      return e.sqlMessage;
+    }
+  }
 }
 
 module.exports = UserService;
