@@ -15,6 +15,19 @@ class UserService extends Service {
       return e.sqlMessage;
     }
   }
+
+  // 注册当前用户
+  async userSignIn({ username, password }) {
+    try {
+      const result = await this.ctx.model.User.create({
+        username,
+        password,
+      });
+      return result;
+    } catch (e) {
+      return e.sqlMessage;
+    }
+  }
 }
 
 module.exports = UserService;

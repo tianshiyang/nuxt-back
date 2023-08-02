@@ -14,4 +14,5 @@ module.exports = app => {
   // 身份认证
   const loginVerify = middleware.loginVerify(app.config.jwt.secret);
   router.post('/api/user/login', controller.user.login.login);
+  router.post('/api/user/signin', controller.user.login.signIn);
 };
