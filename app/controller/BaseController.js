@@ -10,6 +10,10 @@ class BaseController extends Controller {
     };
   }
 
+  parseQuery(query) {
+    return JSON.parse(JSON.stringify(query));
+  }
+
   error({ data, code = 500, message = '请求失败' }) {
     this.ctx.body = {
       data,

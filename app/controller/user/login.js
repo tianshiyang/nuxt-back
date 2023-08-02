@@ -17,7 +17,7 @@ class loginController extends BaseController {
       return;
     }
     const { username, password } = ctx.request.body;
-    let userInfo = await ctx.service.user.index.getUserByUsername(username);
+    const userInfo = this.parseQuery(await ctx.service.user.index.getUserByUsername(username));
 
     if (!userInfo) {
       this.success({
@@ -26,12 +26,16 @@ class loginController extends BaseController {
         message: "用户不存在",
       });
     } else {
-      userInfo = JSON.parse(JSON.stringify(userInfo));
+      const data = {
+        id: userInfo.id,
+        username: userInfo.username,
+      };
+      const token = this.app.jwt.sign(data, this.app.config.jwt.secret);
       if (password === userInfo.password) {
         this.success({
           data: {
             ...userInfo,
-            token: this.app.jwt.sign(this.app.config.jwt.secret, userInfo),
+            token,
           },
           isSuccess: true,
         });
@@ -62,7 +66,7 @@ class loginController extends BaseController {
     }
 
     const { username, password } = ctx.request.body;
-    const userInfo = await ctx.service.user.index.getUserByUsername(username);
+    const userInfo = this.parseQuery(await ctx.service.user.index.getUserByUsername(username));
     if (userInfo) {
       this.success({
         data: null,
@@ -70,14 +74,17 @@ class loginController extends BaseController {
         isSuccess: false,
       });
     } else {
-      let newUserInfo = await ctx.service.user.index.userSignIn({ username, password });
+      const newUserInfo = this.parseQuery(await ctx.service.user.index.userSignIn({ username, password }));
       if (newUserInfo) {
-        console.log(newUserInfo);
-        newUserInfo = JSON.parse(JSON.stringify(newUserInfo));
+        const data = {
+          id: newUserInfo.id,
+          username: newUserInfo.username,
+        };
+        const token = this.app.jwt.sign(data, this.app.config.jwt.secret);
         this.success({
           data: {
             ...newUserInfo,
-            token: this.app.jwt.sign(this.app.config.jwt.secret, userInfo),
+            token,
           },
           isSuccess: true,
         });
