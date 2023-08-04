@@ -5,10 +5,19 @@ class userBaseController extends BaseController {
   async getUserInfo() {
     const { username } = this.getUserToken();
     const userInfo = this.parseQuery(await this.ctx.service.user.index.getUserByUsername(username));
-    this.success({
-      data: userInfo,
-      isSuccess: true,
-    });
+    if (userInfo) {
+      this.success({
+        data: userInfo,
+        isSuccess: true,
+      });
+    } else {
+      this.ctx.response.status = 401;
+      // this.success({
+      //   data: null,
+      //   message: "登录失败",
+      //   isSuccess: false,
+      // });
+    }
   }
 
   // 更新用户信息
