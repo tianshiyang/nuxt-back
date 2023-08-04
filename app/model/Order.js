@@ -1,14 +1,12 @@
 module.exports = app => {
-  const { STRING, INTEGER, DATE } = app.Sequelize;
-  const Order = app.model.define('order', {
+  const { INTEGER, DATE } = app.Sequelize;
+  const Orders = app.model.define('orders', {
     id: { type: INTEGER, primaryKey: true, autoIncrement: true },
-    course: { type: STRING, allowNull: false },
     courseId: { type: INTEGER, allowNull: false },
-    user: { type: STRING, allowNull: false },
     userId: { type: INTEGER, allowNull: false },
     status: INTEGER,
     created_at: DATE,
     updated_at: DATE,
   });
-  return Order;
+  return Orders;
 };
