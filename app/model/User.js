@@ -7,7 +7,7 @@ module.exports = app => {
     nickname: { type: STRING(30) }, // 昵称
     avatar: STRING(100), // 头像
     sex: INTEGER(2), // 性别
-    role: { type: INTEGER, defaultValue: 1 }, // 1群众，2管理员
+    role: { type: INTEGER, defaultValue: 0 }, // 0群众，1管理员
     age: INTEGER,
     created_at: DATE,
     updated_at: DATE,
