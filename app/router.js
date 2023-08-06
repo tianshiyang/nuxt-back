@@ -18,4 +18,5 @@ module.exports = app => {
   router.get('/api/user/getUserInfo', loginVerify, controller.user.index.getUserInfo);
   router.post('/api/user/updateUserInfo', loginVerify, controller.user.index.updateUserInfo);
   router.post('/api/user/updateUserPassword', loginVerify, controller.user.index.updateUserPassword);
+  router.post('/api/course/createCourse', loginVerify, controller.course.index.createCourse);
 };
