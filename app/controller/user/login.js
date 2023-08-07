@@ -17,9 +17,17 @@ class loginController extends BaseController {
       return;
     }
     const { username, password } = ctx.request.body;
-    const userInfo = this.parseQuery(await ctx.service.user.index.getUserByUsername(username));
+    const userInfo = await ctx.service.user.index.getUserByUsername(username);
 
-    if (!userInfo) {
+    if (userInfo.error) {
+      this.success({
+        isSuccess: false,
+        message: userInfo.message,
+      });
+      return;
+    }
+
+    if (!userInfo.value) {
       this.success({
         data: null,
         isSuccess: false,
@@ -27,14 +35,14 @@ class loginController extends BaseController {
       });
     } else {
       const data = {
-        id: userInfo.id,
-        username: userInfo.username,
+        id: userInfo.value.id,
+        username: userInfo.value.username,
       };
       const token = this.app.jwt.sign(data, this.app.config.jwt.secret);
-      if (password === userInfo.password) {
+      if (password === userInfo.value.password) {
         this.success({
           data: {
-            ...userInfo,
+            ...userInfo.value,
             token,
           },
           isSuccess: true,
@@ -66,24 +74,24 @@ class loginController extends BaseController {
     }
 
     const { username, password } = ctx.request.body;
-    const userInfo = this.parseQuery(await ctx.service.user.index.getUserByUsername(username));
-    if (userInfo) {
+    const userInfo = await ctx.service.user.index.getUserByUsername(username);
+    if (userInfo.value) {
       this.success({
         data: null,
         message: "用户名已存在",
         isSuccess: false,
       });
     } else {
-      const newUserInfo = this.parseQuery(await ctx.service.user.index.userSignIn({ username, password }));
-      if (newUserInfo) {
+      const newUserInfo = await ctx.service.user.index.userSignIn({ username, password });
+      if (newUserInfo.value) {
         const data = {
-          id: newUserInfo.id,
-          username: newUserInfo.username,
+          id: newUserInfo.value.id,
+          username: newUserInfo.value.username,
         };
         const token = this.app.jwt.sign(data, this.app.config.jwt.secret);
         this.success({
           data: {
-            ...newUserInfo,
+            ...newUserInfo.value,
             token,
           },
           isSuccess: true,

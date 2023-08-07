@@ -4,29 +4,41 @@ class userBaseController extends BaseController {
   // 获取用户信息
   async getUserInfo() {
     const { username } = this.getUserToken();
-    const userInfo = this.parseQuery(await this.ctx.service.user.index.getUserByUsername(username));
-    if (userInfo) {
+    const userInfo = await this.ctx.service.user.index.getUserByUsername(username);
+    console.log(userInfo);
+    if (userInfo.error) {
       this.success({
-        data: userInfo,
+        message: userInfo.message,
+        isSuccess: false,
+      });
+      return;
+    }
+    if (userInfo.value) {
+      this.success({
+        data: {
+          ...userInfo,
+        },
         isSuccess: true,
       });
     } else {
       this.ctx.response.status = 401;
-      // this.success({
-      //   data: null,
-      //   message: "登录失败",
-      //   isSuccess: false,
-      // });
     }
   }
 
   // 更新用户信息
   async updateUserInfo() {
-    const result = this.parseQuery(await this.ctx.service.user.index.updateUserInfo({ ...this.ctx.request.body }));
-    this.success({
-      data: result,
-      isSuccess: true,
-    });
+    const result = await this.ctx.service.user.index.updateUserInfo({ ...this.ctx.request.body });
+    if (result.errors) {
+      this.success({
+        isSuccess: false,
+        message: result.message,
+      });
+    } else {
+      this.success({
+        data: result.value,
+        isSuccess: true,
+      });
+    }
   }
 
   // 更新用户密码

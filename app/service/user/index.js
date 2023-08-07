@@ -1,6 +1,6 @@
-const Service = require('egg').Service;
+const BaseService = require('../BaseService');
 
-class UserService extends Service {
+class UserService extends BaseService {
   // 通过名称获取当前用户信息
   async getUserByUsername(username) {
     const { ctx } = this;
@@ -10,9 +10,9 @@ class UserService extends Service {
           username,
         },
       });
-      return result;
-    } catch (e) {
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 
@@ -23,9 +23,9 @@ class UserService extends Service {
         username,
         password,
       });
-      return result;
-    } catch (e) {
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 
@@ -41,9 +41,9 @@ class UserService extends Service {
           id,
         },
       });
-      return result;
-    } catch (e) {
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 
@@ -57,9 +57,9 @@ class UserService extends Service {
           id,
         },
       });
-      return result;
-    } catch (e) {
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 }
