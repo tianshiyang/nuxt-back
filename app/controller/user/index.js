@@ -5,7 +5,6 @@ class userBaseController extends BaseController {
   async getUserInfo() {
     const { username } = this.getUserToken();
     const userInfo = await this.ctx.service.user.index.getUserByUsername(username);
-    console.log(userInfo);
     if (userInfo.error) {
       this.success({
         message: userInfo.message,
@@ -16,7 +15,7 @@ class userBaseController extends BaseController {
     if (userInfo.value) {
       this.success({
         data: {
-          ...userInfo,
+          ...userInfo.value,
         },
         isSuccess: true,
       });

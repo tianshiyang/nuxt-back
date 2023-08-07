@@ -18,6 +18,8 @@ module.exports = app => {
   router.get('/api/user/getUserInfo', loginVerify, controller.user.index.getUserInfo);
   router.post('/api/user/updateUserInfo', loginVerify, controller.user.index.updateUserInfo);
   router.post('/api/user/updateUserPassword', loginVerify, controller.user.index.updateUserPassword);
+
+  // 课程管理
   router.post('/api/course/createCourse', loginVerify, controller.course.index.createCourse);
   router.get('/api/course/getCourseList', loginVerify, controller.course.index.getCourseList);
   router.get('/api/course/getCourseDetail', loginVerify, controller.course.index.getCourseDetail);
