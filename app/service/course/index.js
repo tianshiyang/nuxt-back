@@ -12,11 +12,18 @@ class CourseService extends Service {
   }
 
   async getCourseList(params) {
+    console.error(params.startTime, params.endTime);
     let result = null;
     let total = 0;
     const where = {};
     for (const key in params) {
       if (params[key] !== '' && ![ 'pageSize', 'pageNo' ].includes(key)) {
+        if (key === "startTime" || key === "endTime") {
+          where.createdAt = {
+            [sequelize.Op.between]: [ params.startTime, params.endTime ],
+          };
+          continue;
+        }
         where[key] = params[key];
       }
     }
@@ -33,6 +40,7 @@ class CourseService extends Service {
       return [ result, total ];
 
     } catch (e) {
+      console.log(e);
       return e.sqlMessage;
     }
   }

@@ -47,6 +47,7 @@ module.exports = appInfo => {
     database: 'nuxt_back',
     host: 'localhost',
     password: '12345678',
+    timezone: '+08:00',
   };
 
   config.jwt = {
