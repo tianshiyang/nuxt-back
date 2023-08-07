@@ -39,6 +39,20 @@ class CourseService extends Service {
       return e.sqlMessage;
     }
   }
+
+  async getCourseDetail({ courseId }) {
+    let result = null;
+    try {
+      result = await this.ctx.model.Course.findOne({
+        where: {
+          id: courseId,
+        },
+      });
+      return result;
+    } catch (err) {
+      return err.sqlMessage;
+    }
+  }
 }
 
 module.exports = CourseService;

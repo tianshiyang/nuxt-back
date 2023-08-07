@@ -6,14 +6,14 @@ module.exports = app => {
     title: { type: STRING(30), allowNull: false }, // 标题
     source: { type: STRING(200), allowNull: false }, // 资源地址
     courseId: { type: INTEGER, allowNull: false }, // 课程ID
-    created_at: {
+    createdAt: {
       type: DATE,
       get(val) {
         const value = this.getDataValue(val);
         return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
       },
     },
-    updated_at: {
+    updateAt: {
       type: DATE,
       get(val) {
         const value = this.getDataValue(val);

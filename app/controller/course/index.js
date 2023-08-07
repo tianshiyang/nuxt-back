@@ -76,6 +76,34 @@ class CourseControll extends BaseController {
       isSuccess: true,
     });
   }
+
+  // 课程详情
+  async getCourseDetail() {
+    const rules = {
+      courseId: "string",
+    };
+    const errors = this.app.validator.validate(rules, this.ctx.request.query);
+    if (errors) {
+      this.error({
+        message: `${errors[0].field}: ${errors[0].message}`,
+      });
+      return;
+    }
+    const { courseId } = this.ctx.request.query;
+    const result = this.parseQuery(await this.ctx.service.course.index.getCourseDetail({ courseId }));
+    if (result) {
+      this.success({
+        data: {
+          detail: result,
+          isSuccess: true,
+        },
+      });
+    } else {
+      this.success({
+        isSuccess: false,
+      });
+    }
+  }
 }
 
 module.exports = CourseControll;

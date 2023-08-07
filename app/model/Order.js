@@ -6,14 +6,14 @@ module.exports = app => {
     courseId: { type: INTEGER, allowNull: false },
     userId: { type: INTEGER, allowNull: false },
     status: INTEGER,
-    created_at: {
+    createdAt: {
       type: DATE,
       get(val) {
         const value = this.getDataValue(val);
         return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
       },
     },
-    updated_at: {
+    updatedAt: {
       type: DATE,
       get(val) {
         const value = this.getDataValue(val);
