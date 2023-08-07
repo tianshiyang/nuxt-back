@@ -132,6 +132,29 @@ class CourseControll extends BaseController {
       isSuccess: true,
     });
   }
+
+  // 删除课程
+  async deleteCourse() {
+    const rules = {
+      courseId: 'number',
+    };
+    const errors = this.app.validator.validate(rules, this.ctx.request.body);
+    if (errors) {
+      this.error({
+        message: `${errors[0].field}: ${errors[0].message}`,
+      });
+      return;
+    }
+    const result = this.parseQuery(await this.ctx.service.course.index.deleteCourse({ courseId: this.ctx.request.body.courseId }));
+    if (result) {
+      this.success({
+        data: {
+          result,
+        },
+        isSuccess: true,
+      });
+    }
+  }
 }
 
 module.exports = CourseControll;

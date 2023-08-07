@@ -4,5 +4,6 @@
 	"should not be empty": "不能为空",
 	"invalid": "无效",
 	"should be an email": "应该是电子邮件格式",
-	"should be a number": "should be a number"
+	"should be a number": "必须是数字",
+	"should be a string": "必须是字符串"
 }

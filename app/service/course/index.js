@@ -12,7 +12,11 @@ class CourseService extends Service {
   }
 
   async getCourseList(params) {
-    const where = {};
+    const where = {
+      isDelete: {
+        [sequelize.Op.eq]: 0,
+      },
+    };
     for (const key in params) {
       if (params[key] !== '' && ![ 'pageSize', 'pageNo' ].includes(key)) {
         if (key === "startTime" || key === "endTime") {
@@ -50,6 +54,7 @@ class CourseService extends Service {
       });
       return result;
     } catch (err) {
+      console.log(err);
       return err.sqlMessage;
     }
   }
@@ -63,6 +68,21 @@ class CourseService extends Service {
       });
       return result;
     } catch (e) {
+      this.logger.error(e);
+      return e.sqlMessage;
+    }
+  }
+
+  async deleteCourse({ courseId }) {
+    try {
+      const result = this.ctx.model.Course.update({ isDelete: 1 }, {
+        where: {
+          id: courseId,
+        },
+      });
+      return result;
+    } catch (e) {
+      console.log(e);
       this.logger.error(e);
       return e.sqlMessage;
     }

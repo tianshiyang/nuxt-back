@@ -11,6 +11,7 @@ module.exports = app => {
     detail: { type: TEXT, allowNull: false }, // 详情
     isRecommend: { type: INTEGER, defaultValue: 0 }, // 是否推荐： 0不推荐， 1推荐
     isColumn: { type: INTEGER, defaultValue: 0 }, // 是否专栏： 0不是，1是
+    isDelete: { type: INTEGER, defaultValue: 0 }, // 0否 1是
     createdAt: {
       type: DATE,
       get(val) {
