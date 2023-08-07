@@ -71,14 +71,8 @@ class CourseControll extends BaseController {
       });
       return;
     }
-    result[0].forEach(item => {
-      item.tPrice = item.t_price;
-    });
     this.success({
-      data: {
-        list: result[0],
-        total: result[1][0].total,
-      },
+      data: result,
       isSuccess: true,
     });
   }

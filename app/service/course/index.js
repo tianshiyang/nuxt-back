@@ -12,9 +12,6 @@ class CourseService extends Service {
   }
 
   async getCourseList(params) {
-    console.error(params.startTime, params.endTime);
-    let result = null;
-    let total = 0;
     const where = {};
     for (const key in params) {
       if (params[key] !== '' && ![ 'pageSize', 'pageNo' ].includes(key)) {
@@ -28,16 +25,14 @@ class CourseService extends Service {
       }
     }
     try {
-      result = await this.ctx.model.Course.findAll({
+      const { rows: list, count: total } = await this.ctx.model.Course.findAndCountAll({
         where,
         limit: Number(params.pageSize),
         offset: Number(params.pageSize) * Number(params.pageNo - 1),
       });
-      total = await this.ctx.model.Course.findAll({
-        attributes: [[ sequelize.fn("count", "*"), "total" ]],
-        limit: 1,
-      });
-      return [ result, total ];
+      return {
+        list, total,
+      };
 
     } catch (e) {
       console.log(e);
