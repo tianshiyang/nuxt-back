@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = app => {
   const { STRING, INTEGER, DATE, DECIMAL, TEXT } = app.Sequelize;
   const Course = app.model.define('courses', {
@@ -10,8 +11,20 @@ module.exports = app => {
     detail: { type: TEXT, allowNull: false }, // 详情
     isRecommend: { type: INTEGER, defaultValue: 0 }, // 是否推荐： 0不推荐， 1推荐
     isColumn: { type: INTEGER, defaultValue: 0 }, // 是否专栏： 0不是，1是
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
   });
   return Course;
 };

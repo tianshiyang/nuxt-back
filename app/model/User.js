@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
   const User = app.model.define('user', {
@@ -9,8 +10,20 @@ module.exports = app => {
     sex: INTEGER(2), // 性别
     role: { type: INTEGER, defaultValue: 0 }, // 0群众，1管理员
     age: INTEGER,
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
   });
   return User;
 };

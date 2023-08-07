@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = app => {
   const { STRING, INTEGER, DATE } = app.Sequelize;
   const Catalogue = app.model.define('catalogues', {
@@ -5,8 +6,20 @@ module.exports = app => {
     title: { type: STRING(30), allowNull: false }, // 标题
     source: { type: STRING(200), allowNull: false }, // 资源地址
     courseId: { type: INTEGER, allowNull: false }, // 课程ID
-    created_at: DATE,
-    updated_at: DATE,
+    created_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
+    updated_at: {
+      type: DATE,
+      get(val) {
+        const value = this.getDataValue(val);
+        return value ? moment(value).format('YYYY-MM-DD HH:mm:ss') : value;
+      },
+    },
   });
   return Catalogue; // 目录
 };
