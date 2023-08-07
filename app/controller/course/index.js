@@ -17,31 +17,22 @@ class CourseControll extends BaseController {
       });
       return;
     }
-    let result = null;
-    try {
-      result = this.parseQuery(await this.ctx.service.course.index.createCourse());
-    } catch (err) {
+    const result = await this.ctx.service.course.index.createCourse();
+    if (result.error) {
       this.success({
         isSuccess: false,
-        data: err,
-      });
-    }
-    if (result) {
-      this.success({
-        isSuccess: true,
-        data: null,
+        message: result.message,
       });
     } else {
       this.success({
-        isSuccess: false,
-        message: "创建失败",
+        isSuccess: true,
+        data: null,
       });
     }
   }
 
   // 获取课程列表
   async getCourseList() {
-    let result = null;
     const { tPrice: t_price,
       isRecommend: is_recommend,
       startTime,
@@ -51,30 +42,28 @@ class CourseControll extends BaseController {
       price,
       pageSize,
       pageNo } = this.ctx.query;
-    try {
-      result = this.parseQuery(await this.ctx.service.course.index.getCourseList({
-        title,
-        price,
-        t_price,
-        is_recommend,
-        startTime,
-        endTime,
-        is_column,
-        pageSize,
-        pageNo,
-      })
-      );
-    } catch (err) {
-      this.success({
-        message: err,
-        isSuccess: false,
-      });
-      return;
-    }
-    this.success({
-      data: result,
-      isSuccess: true,
+    const result = await this.ctx.service.course.index.getCourseList({
+      title,
+      price,
+      t_price,
+      is_recommend,
+      startTime,
+      endTime,
+      is_column,
+      pageSize,
+      pageNo,
     });
+    if (result.error) {
+      this.success({
+        isSuccess: false,
+        message: result.message,
+      });
+    } else {
+      this.success({
+        data: result.value,
+        isSuccess: true,
+      });
+    }
   }
 
   // 课程详情
@@ -90,17 +79,18 @@ class CourseControll extends BaseController {
       return;
     }
     const { courseId } = this.ctx.request.query;
-    const result = this.parseQuery(await this.ctx.service.course.index.getCourseDetail({ courseId }));
-    if (result) {
+    const result = await this.ctx.service.course.index.getCourseDetail({ courseId });
+    if (result.error) {
       this.success({
-        data: {
-          detail: result,
-          isSuccess: true,
-        },
+        isSuccess: false,
+        message: result.message,
       });
     } else {
       this.success({
-        isSuccess: false,
+        data: {
+          detail: result.value,
+          isSuccess: true,
+        },
       });
     }
   }
@@ -125,12 +115,19 @@ class CourseControll extends BaseController {
     const { courseId, title, price, tPrice, desc, detail, isColumn, isRecommend, cover }
       = this.ctx.request.body;
     const result = this.parseQuery(await this.service.course.index.updateCourse({ courseId, title, price, tPrice, desc, detail, isColumn, isRecommend, cover }));
-    this.success({
-      data: {
-        result,
-      },
-      isSuccess: true,
-    });
+    if (result.error) {
+      this.success({
+        isSuccess: false,
+        message: result.message,
+      });
+    } else {
+      this.success({
+        data: {
+          ...result.value,
+        },
+        isSuccess: true,
+      });
+    }
   }
 
   // 删除课程
@@ -146,7 +143,12 @@ class CourseControll extends BaseController {
       return;
     }
     const result = this.parseQuery(await this.ctx.service.course.index.deleteCourse({ courseId: this.ctx.request.body.courseId }));
-    if (result) {
+    if (result.error) {
+      this.success({
+        message: result.message,
+        isSuccess: false,
+      });
+    } else {
       this.success({
         data: {
           result,

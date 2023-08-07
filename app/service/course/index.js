@@ -1,14 +1,14 @@
-const Service = require('egg').Service;
 const sequelize = require('sequelize');
-class CourseService extends Service {
+const BaseService = require('../BaseService');
+class CourseService extends BaseService {
   async createCourse() {
     let result = null;
     try {
       result = await this.ctx.model.Course.create({ ...this.ctx.request.body, t_price: this.ctx.request.body.tPrice });
+      return this.parseSqlResult(result);
     } catch (err) {
-      return err.sqlMessage;
+      return this.sqlError(err);
     }
-    return result;
   }
 
   async getCourseList(params) {
@@ -34,13 +34,9 @@ class CourseService extends Service {
         limit: Number(params.pageSize),
         offset: Number(params.pageSize) * Number(params.pageNo - 1),
       });
-      return {
-        list, total,
-      };
-
-    } catch (e) {
-      console.log(e);
-      return e.sqlMessage;
+      return this.parseSqlResult({ list, total });
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 
@@ -52,10 +48,9 @@ class CourseService extends Service {
           id: courseId,
         },
       });
-      return result;
+      return this.parseSqlResult(result);
     } catch (err) {
-      console.log(err);
-      return err.sqlMessage;
+      return this.sqlError(err);
     }
   }
 
@@ -66,10 +61,9 @@ class CourseService extends Service {
           id: queryParams.courseId,
         },
       });
-      return result;
-    } catch (e) {
-      this.logger.error(e);
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 
@@ -80,11 +74,9 @@ class CourseService extends Service {
           id: courseId,
         },
       });
-      return result;
-    } catch (e) {
-      console.log(e);
-      this.logger.error(e);
-      return e.sqlMessage;
+      return this.parseSqlResult(result);
+    } catch (err) {
+      return this.sqlError(err);
     }
   }
 }
