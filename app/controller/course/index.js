@@ -104,6 +104,34 @@ class CourseControll extends BaseController {
       });
     }
   }
+
+  // 更新课程
+  async updateCourse() {
+    const rules = {
+      courseId: "number",
+      title: "string",
+      price: "string",
+      tPrice: "string",
+      desc: "string",
+      detail: "string",
+    };
+    const errors = this.app.validator.validate(rules, this.ctx.request.body);
+    if (errors) {
+      this.error({
+        message: `${errors[0].field}: ${errors[0].message}`,
+      });
+      return;
+    }
+    const { courseId, title, price, tPrice, desc, detail, isColumn, isRecommend, cover }
+      = this.ctx.request.body;
+    const result = this.parseQuery(await this.service.course.index.updateCourse({ courseId, title, price, tPrice, desc, detail, isColumn, isRecommend, cover }));
+    this.success({
+      data: {
+        result,
+      },
+      isSuccess: true,
+    });
+  }
 }
 
 module.exports = CourseControll;

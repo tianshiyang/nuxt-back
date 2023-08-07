@@ -53,6 +53,20 @@ class CourseService extends Service {
       return err.sqlMessage;
     }
   }
+
+  async updateCourse(queryParams) {
+    try {
+      const result = this.ctx.model.Course.update({ ...queryParams }, {
+        where: {
+          id: queryParams.courseId,
+        },
+      });
+      return result;
+    } catch (e) {
+      this.logger.error(e);
+      return e.sqlMessage;
+    }
+  }
 }
 
 module.exports = CourseService;
