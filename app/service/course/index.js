@@ -18,7 +18,7 @@ class CourseService extends BaseService {
       },
     };
     for (const key in params) {
-      if (params[key] !== '' && ![ 'pageSize', 'pageNo' ].includes(key)) {
+      if (params[key] && params[key] !== '' && ![ 'pageSize', 'pageNo' ].includes(key)) {
         if (key === "startTime" || key === "endTime") {
           where.createdAt = {
             [sequelize.Op.between]: [ params.startTime, params.endTime ],
@@ -34,8 +34,10 @@ class CourseService extends BaseService {
         limit: Number(params.pageSize),
         offset: Number(params.pageSize) * Number(params.pageNo - 1),
       });
+      console.log(list);
       return this.parseSqlResult({ list, total });
     } catch (err) {
+      console.log(err);
       return this.sqlError(err);
     }
   }

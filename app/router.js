@@ -25,4 +25,7 @@ module.exports = app => {
   router.get('/api/course/getCourseDetail', loginVerify, controller.course.index.getCourseDetail);
   router.post('/api/course/updateCourse', loginVerify, controller.course.index.updateCourse);
   router.post('/api/course/deleteCourse', loginVerify, controller.course.index.deleteCourse);
+
+  // 订单
+  router.post('/api/order/addCard', loginVerify, controller.order.index.addCard);
 };
