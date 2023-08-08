@@ -45,6 +45,40 @@ class OrderController extends BaseController {
       });
     }
   }
+
+  async getCarList() {
+    const rules = {
+      pageNo: 'string',
+      pageSize: "string",
+    };
+    const errors = this.app.validator.validate(rules, this.ctx.request.query);
+    if (errors) {
+      this.error({
+        message: `${errors[0].field}: ${errors[0].message}`,
+      });
+      return;
+    }
+    const { id } = this.getUserToken();
+    const { pageNo, pageSize } = this.ctx.request.query;
+    const result = await this.ctx.service.order.index.getCarList({
+      userId: id,
+      pageNo: Number(pageNo),
+      pageSize: Number(pageSize),
+    });
+    if (result.error) {
+      this.success({
+        isSuccess: false,
+        message: result.message,
+      });
+    } else {
+      this.success({
+        isSuccess: true,
+        data: {
+          ...result.value,
+        },
+      });
+    }
+  }
 }
 
 module.exports = OrderController;

@@ -21,6 +21,7 @@ class BaseController extends Controller {
 
   error({ data, code = 500, message = '请求失败' }) {
     this.ctx.body = {
+      isSuccess: false,
       data,
       code,
       message,

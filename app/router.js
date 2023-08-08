@@ -28,4 +28,5 @@ module.exports = app => {
 
   // 订单
   router.post('/api/order/addCard', loginVerify, controller.order.index.addCard);
+  router.get('/api/order/getCarList', loginVerify, controller.order.index.getCarList);
 };

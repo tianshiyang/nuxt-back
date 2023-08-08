@@ -32,6 +32,27 @@ class OrderService extends BaseService {
       return this.sqlError(err);
     }
   }
+
+  // 获取购物车列表
+  async getCarList({ pageNo, pageSize, userId }) {
+    try {
+      const { count: total, rows: list } = await this.ctx.model.Order.findAndCountAll({
+        where: {
+          userId,
+          status: 1,
+        },
+        limit: pageSize,
+        offset: (pageNo - 1) * pageSize,
+      });
+      return this.parseSqlResult({
+        list,
+        total,
+      });
+    } catch (e) {
+      console.log(e);
+      return this.sqlError(e);
+    }
+  }
 }
 
 module.exports = OrderService;
