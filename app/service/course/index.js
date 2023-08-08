@@ -34,10 +34,8 @@ class CourseService extends BaseService {
         limit: Number(params.pageSize),
         offset: Number(params.pageSize) * Number(params.pageNo - 1),
       });
-      console.log(list);
       return this.parseSqlResult({ list, total });
     } catch (err) {
-      console.log(err);
       return this.sqlError(err);
     }
   }
