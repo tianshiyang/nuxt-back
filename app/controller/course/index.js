@@ -17,6 +17,14 @@ class CourseControll extends BaseController {
       });
       return;
     }
+    const { price, tPrice } = this.ctx.request.body;
+    if (price < tPrice) {
+      this.success({
+        isSuccess: false,
+        message: "原价不能小于现价",
+      });
+      return;
+    }
     const result = await this.ctx.service.course.index.createCourse();
     if (result.error) {
       this.success({
