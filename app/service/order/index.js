@@ -1,3 +1,4 @@
+const sequelize = require("sequelize");
 const BaseService = require("../BaseService");
 
 class OrderService extends BaseService {
@@ -37,12 +38,22 @@ class OrderService extends BaseService {
   async getCarList({ pageNo, pageSize, userId }) {
     try {
       const { count: total, rows: list } = await this.ctx.model.Order.findAndCountAll({
+        attributes: {
+          include: [[ sequelize.col('course.title'), 'title' ]],
+        },
         where: {
           userId,
           status: 1,
         },
         limit: pageSize,
         offset: (pageNo - 1) * pageSize,
+        include: [
+          {
+            model: this.ctx.model.Course,
+            as: 'course',
+            attributes: [],
+          },
+        ],
       });
       return this.parseSqlResult({
         list,

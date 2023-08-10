@@ -21,5 +21,9 @@ module.exports = app => {
       },
     },
   });
+  Orders.associate = function() {
+    app.model.Order.belongsTo(app.model.User, { foreignKey: 'userId', targetKey: "id" });
+    app.model.Order.belongsTo(app.model.Course, { foreignKey: 'courseId', targetKey: "id" });
+  };
   return Orders;
 };
