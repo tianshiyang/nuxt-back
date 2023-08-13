@@ -64,6 +64,21 @@ class OrderService extends BaseService {
       return this.sqlError(e);
     }
   }
+
+  // 删除订单
+  async deleteCarCourse({ id }) {
+    try {
+      const result = await this.ctx.model.Order.destroy({
+        where: {
+          id,
+        },
+      });
+      return this.parseSqlResult(result);
+    } catch (e) {
+      console.error(e);
+      return this.sqlError(e);
+    }
+  }
 }
 
 module.exports = OrderService;

@@ -79,6 +79,33 @@ class OrderController extends BaseController {
       });
     }
   }
+
+  async deleteCarCourse() {
+    const rules = {
+      id: 'number',
+    };
+    const errors = this.app.validator.validate(rules, this.ctx.request.body);
+    if (errors) {
+      this.error({
+        message: `${errors[0].field}: ${errors[0].message}`,
+      });
+      return;
+    }
+    const { id } = this.ctx.request.body;
+    const result = await this.ctx.service.order.index.deleteCarCourse({ id });
+    if (result.error) {
+      this.success({
+        message: result.message,
+        isSuccess: false,
+      });
+    } else {
+      this.success({
+        data: {
+          ...result.value,
+        },
+      });
+    }
+  }
 }
 
 module.exports = OrderController;

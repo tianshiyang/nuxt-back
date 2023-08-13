@@ -26,7 +26,8 @@ module.exports = app => {
   router.post('/api/course/updateCourse', loginVerify, controller.course.index.updateCourse);
   router.post('/api/course/deleteCourse', loginVerify, controller.course.index.deleteCourse);
 
-  // 订单
+  // 购物车
   router.post('/api/order/addCard', loginVerify, controller.order.index.addCard);
   router.get('/api/order/getCarList', loginVerify, controller.order.index.getCarList);
+  router.post('/api/order/deleteCarCourse', loginVerify, controller.order.index.deleteCarCourse);
 };
